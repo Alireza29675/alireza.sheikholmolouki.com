@@ -1,6 +1,8 @@
+import Game from './Game'
+
 class App {
     constructor() {
-        console.log(THREE)
+        this.game = new Game('body')
     }
 }
 
