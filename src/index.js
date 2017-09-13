@@ -1,4 +1,5 @@
 import App from './components/App'
+import './stylesheets/index.sass'
 
 window.$ = (query) => document.querySelector(query);
 window.$$ = (query) => document.querySelectorAll(query);
