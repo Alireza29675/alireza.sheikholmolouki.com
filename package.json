@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
     "server": "SET DEBUG=alireza.sheikholmolouki.com:* & npm start",
-    "dev": "webpack"
+    "bundle": "webpack"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
