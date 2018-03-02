@@ -1,3 +1,4 @@
+import './components/analytics'
 import App from './components/App'
 import './stylesheets/index.sass'
 import 'framesflow'
