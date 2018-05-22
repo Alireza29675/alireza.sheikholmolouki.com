@@ -2,18 +2,31 @@ const Memory = require('../model/Memory');
 
 class Brain {
 
-    memorize (message, conversationId = '', questionId = 0, confident = 0, fromUser = false) {
+    memorize (message = '', conversationId = '', questionId = 0, confident = 0, fromUser = false) {
         const memory = new Memory({
             conversationId: conversationId,
             message: message,
-            confident: confident
+            confident: confident,
             questionId: questionId,
             fromUser: fromUser,
         })
         memory.save(err => {
             if (err) return console.log('Brain has memorizing problem!');
-            console.log('new memory: ' + message);
         })
+    }
+
+    async think (message) {
+
+        if (message === 'hello') return {
+            confident: 1,
+            message: 'hey there?'
+        }
+
+        return {
+            confident: 0.9,
+            message: `What do you mean by "${message}"?`
+        }
+
     }
 
     async hear (message, conversationId = '', questionId = 0) {
@@ -22,7 +35,11 @@ class Brain {
 
         this.memorize(message, conversationId, questionId, 1, true);
         
-        if (message === 'hello') return 'hey there!'
+        const answer = await this.think(message);
+
+        this.memorize(answer.message, conversationId, questionId, answer.confident, false);
+
+        return answer.message;
 
     }
 
