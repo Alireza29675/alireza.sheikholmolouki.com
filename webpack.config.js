@@ -1,22 +1,30 @@
+const fs = require('fs');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
+const bundleNames = fs.readdirSync('./client/bundles');
+const entries = {};
+for (let name of bundleNames) {
+    entries[name] = `./client/bundles/${name}/index.js`
+}
+
 module.exports = {
+    mode: 'development',
     devtool: 'inline-source-map',
-    entry: './src/index.js',
-    watch: true,
+    entry: entries,
     output: {
-        filename: './public/scripts/bundle.js',
-        sourceMapFilename: './public/scripts/bundle.js.map'
+        filename: './javascripts/[name].bundle.js',
+        sourceMapFilename: './javascripts/[name].bundle.js.map'
     },
     module: {
-        loaders: [{
-            test: /\.jsx?$/,
-            exclude: /(node_modules|bower_components)/,
-            loader: 'babel-loader',
-            query: {
-                presets: ['es2015' ]
-            }
-        }, {
-            test: /\.sass$/,
-            loader: 'style-loader!css-loader?-url!sass-loader'
-        }]
-    }
+        rules: [
+            {
+                test: /\.jsx?$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: 'babel-loader',
+                query: { presets: ['es2015'] }
+            }]
+    },
+    plugins: [
+        new UglifyJsPlugin({ sourceMap: true })
+    ]
 };

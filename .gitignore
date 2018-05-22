@@ -58,3 +58,5 @@ typings/
 .env
 
 bundle.js
+
+.DS_Store
