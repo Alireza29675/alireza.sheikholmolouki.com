@@ -1,3 +1,5 @@
+const brain = require('./brain/brain');
+
 class Server {
 
     constructor () {
@@ -21,11 +23,11 @@ class Server {
 
 const onUserConnected = socket => {
     socket.on('question', data => {
-        console.log(data)
-        const answer = 'What do you mean by ' + data.message + '?';
-        socket.emit('answer', {
-            id: data.id,
-            message: answer
+        brain.hear(data.message, socket.id, data.id).then(answer => {
+            socket.emit('answer', {
+                id: data.id,
+                message: answer
+            })
         })
     });
 };
