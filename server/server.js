@@ -23,10 +23,11 @@ class Server {
 
 const onUserConnected = socket => {
     socket.on('question', data => {
-        brain.hear(data.message, socket.id, data.id).then(answer => {
+        brain.hear(data.message, socket.id, data.id, answer => {
             socket.emit('answer', {
                 id: data.id,
-                message: answer
+                message: answer.message,
+                confidence: answer.confidence
             })
         })
     });

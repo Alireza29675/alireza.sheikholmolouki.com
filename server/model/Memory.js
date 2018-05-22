@@ -31,7 +31,10 @@ memorySchema.statics.getByQuestionId = function (conversationId, questionId, cb)
 }
 
 memorySchema.statics.searchQuestions = async function (query, cb) {
-    return this.find({ 'question.message': new RegExp(query, 'i'), 'question.confidence': { $gt: 0.3 } }).limit(20).exec(cb);
+    return this.find({ 'question.message': new RegExp(query, 'i'), 'question.confidence': { $gt: 0.4 } })
+        .sort({ 'answer.confidence': 1, createdAt: 1 })
+        .limit(10)
+        .exec(cb);
 }
 
 const Memory = db.model('Memory', memorySchema);

@@ -21,7 +21,7 @@ class Brain {
 
     }
 
-    async thinkAbout (question) {
+    async thinkAboutSentence (question) {
 
         const message = question.message;
 
@@ -31,37 +31,58 @@ class Brain {
         for (let word of words) {
             const memories = await Memory.searchQuestions(word);
             for (let memory of memories) {
-                answers[memory.answer.message] = memory.answer.confidence;
+                answers[memory.answer.message] = {
+                    confidence: memory.answer.confidence,
+                    question: memory.question.message
+                }
             }
+        }
+
+        for (let answer in answers) {
+            const questionsSimilarity = similarity(question.message, answers[answer].question);
+            answers[answer].confidence *= questionsSimilarity;
         }
 
         for (let mainAnswer in answers) {
             for (let answer in answers) {
                 const textSimilarity = similarity(mainAnswer, answer);
                 const situationSimilarity = 1;
-                answers[answer] *= 1 + (answers[mainAnswer] * textSimilarity * situationSimilarity);
+                answers[answer].confidence *= 0.4 + (answers[mainAnswer].confidence * textSimilarity * situationSimilarity);
             }
         }
 
         let confidenceMax = 0;
         for (let answer in answers) {
-            if (answers[answer] > confidenceMax) confidenceMax = answers[answer];
+            if (answers[answer].confidence > confidenceMax) confidenceMax = answers[answer].confidence;
         }
         if (confidenceMax > 0.8) {
             for (let answer in answers) {
-                answers[answer] /= confidenceMax;
+                answers[answer].confidence /= confidenceMax;
             }
         }
 
         const finalToughts = [];
+        let finalToughtsConfidenceSum = 0;
 
         for (let answer in answers) {
-            if (answers[answer] > 0.7) {
-                finalToughts.push({ message: answer, confidence: answers[answer] });
+            if (answers[answer].confidence > 0.7) {
+                finalToughts.push({ message: answer, confidence: answers[answer].confidence });
+                finalToughtsConfidenceSum += answers[answer].confidence;
             }
         }
 
-        console.log(finalToughts);
+        let randSum = 0, randNumber = Math.random() * finalToughtsConfidenceSum, answerTought = null;
+        for (let tought of finalToughts) {
+            randSum += tought.confidence;
+            if (randNumber <= randSum) {
+                answerTought = tought;
+                break;
+            }
+        }
+
+        console.log(answerTought, finalToughts);
+
+        if (answerTought) return answerTought;
 
         return {
             confidence: 0.01,
@@ -70,16 +91,29 @@ class Brain {
 
     }
 
-    async hear (message, conversationId = '', questionId = 0) {
+    async thinkAbout (question, conversationId = '', questionId = 0, onAnswer) {
+        
+        const sentences = question.message.split(' and ');
+
+        for (let sentence of sentences) {
+            const slicedQuestion = {
+                message: sentence,
+                confidence: question.confidence * 0.9
+            }
+            const answer = await this.thinkAboutSentence(slicedQuestion);
+            // this.memorize(question, answer, conversationId, questionId, false);
+            onAnswer(answer)
+        }
+
+    }
+
+    async hear (message, conversationId = '', questionId = 0, onAnswer) {
 
         message = message.toLowerCase();
 
         const question = { message, confidence: 1 };
-        const answer = await this.thinkAbout(question);
 
-        // this.memorize(question, answer, conversationId, questionId, false);
-
-        return answer.message;
+        await this.thinkAbout(question, conversationId = '', questionId = 0, onAnswer);
 
     }
 
