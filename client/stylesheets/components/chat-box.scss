@@ -1,7 +1,22 @@
 section.chat-box {
-    width: 60%;
+    width: 80%;
 
     & > p {
         font-size: 40px;
+        position: relative;
+        top: -20px;
+        opacity: 0;
+
+        &.user {
+            font-size: 30px;
+            position: relative;
+            transition-duration: 0.3s;
+            margin-top: 30px;
+
+            &:before {
+                content: 'You: ';
+                color: grey;
+            }
+        }
     }
 }
