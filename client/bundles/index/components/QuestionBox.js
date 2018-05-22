@@ -1,4 +1,5 @@
 import newsha from 'newsha'
+import socket from '../model/socket'
 
 class QuestionBox {
 
@@ -11,7 +12,9 @@ class QuestionBox {
         this.isTypingMode = false;
         this.canType = false;
         this.isTyping = false;
+        this.lastQuestionId = 0;
         this.initNewsha();
+        this.initSocket();
         this.init();
     }
 
@@ -22,6 +25,20 @@ class QuestionBox {
                 this.enableTypingMode();
             }
         });
+    }
+
+    initSocket () {
+        socket.on('answer', data => {
+            if (this.lastQuestionId !== data.id) return;
+            const answer = document.createElement('p');
+            answer.classList.add('alireza');
+            answer.innerHTML = data.message;
+            this.chatBox.appendChild(answer);
+            setTimeout(() => {
+                answer.classList.add('show')
+            }, 2000)
+            setTimeout(() => this.enableTypingMode(), data.message.length * 20 + 3000);
+        })
     }
 
     init () {
@@ -79,19 +96,37 @@ class QuestionBox {
     }
 
     throwTextToChatBox (text) {
-        this.mainTitle.innerHTML = '';
-        const question = document.createElement('p');
-
-        const top = this.questionBox.offsetTop - this.chatBox.offsetHeight + 22;
-        const left = this.questionBox.offsetLeft - 30;
-
-        question.classList.add('user');
-        question.innerHTML = text;
-        this.chatBox.appendChild(question);
+        const pastParagraphs = document.querySelectorAll('.chat-box p');
+        for (let p of pastParagraphs) p.classList.add('away');
 
         setTimeout(() => {
-            this.disableTypingMode();
+            for (let p of pastParagraphs) p.remove();
+
+            this.mainTitle.innerHTML = '';
+            const question = document.createElement('p');
+
+            const top = this.questionBox.offsetTop - this.chatBox.offsetHeight + 22;
+            const left = this.questionBox.offsetLeft - 30;
+
+            question.classList.add('user');
+            question.innerHTML = text;
+            this.chatBox.appendChild(question);
+
+            setTimeout(() => {
+                question.classList.add('show')
+            }, 100)
+            
+            this.askServer(text);
+
+            setTimeout(() => {
+                this.disableTypingMode();
+            }, 500);
         }, 500);
+    }
+
+    askServer (text) {
+        this.lastQuestionId++;
+        socket.emit('question', { id: this.lastQuestionId, message: text });
     }
 
 }

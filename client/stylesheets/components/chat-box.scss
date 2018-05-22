@@ -7,16 +7,40 @@ section.chat-box {
         top: -20px;
         opacity: 0;
 
-        &.user {
+        &.user, &.alireza {
             font-size: 30px;
-            position: relative;
             transition-duration: 0.3s;
-            margin-top: 30px;
+            margin-top: 20px;
+            opacity: 0 !important;
+            top: 20px !important;
+            transition-duration: 0.6s;
+
+            &.user {
+                margin-top: 100px;
+            }
+
+            &.show {
+                opacity: 1 !important;
+                top: 0 !important;
+            }
+
+            &.away {
+                opacity: 0 !important;
+                top: -300px !important;
+            }
 
             &:before {
                 content: 'You: ';
                 color: grey;
             }
+        }
+        &.alireza:before {
+            content: 'Alireza: ';
+        }
+
+        &.away {
+            opacity: 0 !important;
+            top: -300px !important;
         }
     }
 }
