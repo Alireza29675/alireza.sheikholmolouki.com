@@ -26,7 +26,8 @@
     "node-sass-middleware": "^0.11.0",
     "pretty-error": "^2.1.1",
     "pug": "^2.0.1",
-    "serve-favicon": "~2.4.5"
+    "serve-favicon": "~2.4.5",
+    "string-similarity": "^1.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

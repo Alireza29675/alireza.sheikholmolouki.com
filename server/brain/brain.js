@@ -1,29 +1,70 @@
+const similarity = require('string-similarity').compareTwoStrings;
+
 const Memory = require('../model/Memory');
 
 class Brain {
 
-    memorize (message = '', conversationId = '', questionId = 0, confident = 0, fromUser = false) {
+    memorize (question, answer, conversationId = '', questionId = 0) {
+
         const memory = new Memory({
-            conversationId: conversationId,
-            message: message,
-            confident: confident,
-            questionId: questionId,
-            fromUser: fromUser,
+            conversationId,
+            question,
+            answer,
+            questionId
         })
         memory.save(err => {
-            if (err) return console.log('Brain has memorizing problem!');
+            if (err) {
+                console.log(question, answer)
+                return console.log('Brain has memorizing problem!');
+            }
         })
+
     }
 
-    async think (message) {
+    async thinkAbout (question) {
 
-        if (message === 'hello') return {
-            confident: 1,
-            message: 'hey there?'
+        const message = question.message;
+
+        const words = message.split(' ');
+        const answers = [];
+        
+        for (let word of words) {
+            const memories = await Memory.searchQuestions(word);
+            for (let memory of memories) {
+                answers[memory.answer.message] = memory.answer.confidence;
+            }
         }
 
+        for (let mainAnswer in answers) {
+            for (let answer in answers) {
+                const textSimilarity = similarity(mainAnswer, answer);
+                const situationSimilarity = 1;
+                answers[answer] *= 1 + (answers[mainAnswer] * textSimilarity * situationSimilarity);
+            }
+        }
+
+        let confidenceMax = 0;
+        for (let answer in answers) {
+            if (answers[answer] > confidenceMax) confidenceMax = answers[answer];
+        }
+        if (confidenceMax > 0.8) {
+            for (let answer in answers) {
+                answers[answer] /= confidenceMax;
+            }
+        }
+
+        const finalToughts = [];
+
+        for (let answer in answers) {
+            if (answers[answer] > 0.7) {
+                finalToughts.push({ message: answer, confidence: answers[answer] });
+            }
+        }
+
+        console.log(finalToughts);
+
         return {
-            confident: 0.9,
+            confidence: 0.01,
             message: `What do you mean by "${message}"?`
         }
 
@@ -31,13 +72,12 @@ class Brain {
 
     async hear (message, conversationId = '', questionId = 0) {
 
-        message = message.toLowerCase()
+        message = message.toLowerCase();
 
-        this.memorize(message, conversationId, questionId, 1, true);
-        
-        const answer = await this.think(message);
+        const question = { message, confidence: 1 };
+        const answer = await this.thinkAbout(question);
 
-        this.memorize(answer.message, conversationId, questionId, answer.confident, false);
+        // this.memorize(question, answer, conversationId, questionId, false);
 
         return answer.message;
 

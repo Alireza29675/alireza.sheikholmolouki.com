@@ -4,32 +4,34 @@ const memorySchema = db.Schema({
     conversationId: String,
     message: String,
     questionId: Number,
-    fromUser: Boolean,
-    confident: Number,
+    question: {
+        confidence: Number,
+        message: String,
+    },
+    answer: {
+        confidence: Number,
+        message: String,
+    },
     createdAt: {
         type: Date,
         default: Date.now
     }
 });
 
-memorySchema.methods.all = function (cb) {
-    return this.model('Memory').find({}, cb);
+memorySchema.statics.getAll = function (cb) {
+    return this.find({}, cb);
 }
 
-memorySchema.methods.getConversationMessages = function (id, cb) {
-    return this.model('Memory').find({ conversationId: id }, cb);
+memorySchema.statics.getConversationMessages = function (conversationId, cb) {
+    return this.find({ conversationId }, cb);
 }
 
-memorySchema.methods.getPair = function (conversationId, questionId, cb) {
-    return this.model('Memory').find({ conversationId, questionId }, cb);
+memorySchema.statics.getByQuestionId = function (conversationId, questionId, cb) {
+    return this.find({ conversationId, questionId }, cb);
 }
 
-memorySchema.methods.getConversationAlirezaMessages = function (id, cb) {
-    return this.model('Memory').find({ conversationId: id, fromUser: false }, cb);
-}
-
-memorySchema.methods.getConversationUserMessages = function (id, cb) {
-    return this.model('Memory').find({ conversationId: id, fromUser: true }, cb);
+memorySchema.statics.searchQuestions = async function (query, cb) {
+    return this.find({ 'question.message': new RegExp(query, 'i'), 'question.confidence': { $gt: 0.3 } }).limit(20).exec(cb);
 }
 
 const Memory = db.model('Memory', memorySchema);
