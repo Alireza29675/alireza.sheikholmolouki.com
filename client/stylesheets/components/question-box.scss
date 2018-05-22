@@ -1,0 +1,23 @@
+.question-box {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+
+    & > .title {
+        font-size: 30px;
+    }
+
+    & > ul.suggestions {
+        list-style: none;
+        font-size: 18px;
+
+        & > li {
+            margin-top: 10px;
+            color: #AAA;
+            font-weight: 100;
+        }
+    }
+
+}
