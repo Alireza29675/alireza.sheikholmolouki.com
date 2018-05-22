@@ -58,6 +58,7 @@ class Brain {
         if (confidenceMax > 0.8) {
             for (let answer in answers) {
                 answers[answer].confidence /= confidenceMax;
+                answers[answer].confidence *= 0.9;
             }
         }
 
@@ -101,7 +102,7 @@ class Brain {
                 confidence: question.confidence * 0.9
             }
             const answer = await this.thinkAboutSentence(slicedQuestion);
-            // this.memorize(question, answer, conversationId, questionId, false);
+            this.memorize(question, answer, conversationId, questionId, false);
             onAnswer(answer)
         }
 
@@ -115,6 +116,10 @@ class Brain {
 
         await this.thinkAbout(question, conversationId = '', questionId = 0, onAnswer);
 
+    }
+
+    reset () {
+        return Memory.reset();
     }
 
 }

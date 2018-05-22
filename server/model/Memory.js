@@ -37,6 +37,10 @@ memorySchema.statics.searchQuestions = async function (query, cb) {
         .exec(cb);
 }
 
+memorySchema.statics.reset = async function () {
+    return this.deleteMany({}).exec()
+}
+
 const Memory = db.model('Memory', memorySchema);
 
 module.exports = Memory;
