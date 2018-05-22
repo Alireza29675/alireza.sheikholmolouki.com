@@ -10,7 +10,7 @@ body {
 
 main {
     flex-grow: 1;
-    margin: 60px;
+    margin: 80px 90px;
     position: relative;
 
     nav {
@@ -45,4 +45,7 @@ main {
             }
         }
     }
+
+    @import './components/chat-box';
+
 }
