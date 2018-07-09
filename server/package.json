@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "pm2 ./bin/www"
+    "start": "node ./bin/www",
+    "start:watch": "nodemon ./bin/www",
+    "pm2:start": "pm2 start ./bin/www --name personal-website",
+    "pm2:restart": "pm2 restart personal-website",
+    "pm2:stop": "pm2 stop personal-website"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

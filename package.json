@@ -1,0 +1,22 @@
+{
+  "name": "alireza.sheikholmolouki.com",
+  "version": "1.0.0",
+  "description": "Alireza Sheikholmolouki's website",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd src && webpack && cd ../server && npm run pm2:start",
+    "start:dev": "cd server && npm run start:watch",
+    "bundle": "cd src && webpack",
+    "bundle:watch": "cd src && webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alireza29675/alireza.sheikholmolouki.com.git"
+  },
+  "author": "Alireza Sheikholmolouki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Alireza29675/alireza.sheikholmolouki.com/issues"
+  },
+  "homepage": "https://github.com/Alireza29675/alireza.sheikholmolouki.com#readme"
+}

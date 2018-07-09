@@ -65,16 +65,23 @@ canvas.background {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: lighter;
     margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .present h1 .break {
     height: 15px;
     display: none;
 }
+.present h1 .name-holder {
+    border: 2px solid #000;
+    display: flex;
+    margin-left: 14px;
+}
 .present h1 a {
     color: black;
     text-decoration: none;
     padding: 10px;
-    border: 2px solid #000;
     position: relative;
     cursor: pointer;
 }

@@ -5,7 +5,6 @@ module.exports = {
     output: {
         filename: '../server/public/app.bundle.js'
     },
-    watch: true,
     module: {
         loaders: [
             {
