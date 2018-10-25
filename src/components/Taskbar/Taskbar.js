@@ -6,9 +6,16 @@ class Taskbar extends Component {
     render() {
         return (
             <div className="taskbar">
-                <Button>Hello</Button>
+                <Button style={styles.startButton}><b>Start</b></Button>
             </div>
         );
+    }
+}
+
+const styles = {
+    startButton: {
+        marginLeft: 2,
+        height: 26
     }
 }
 
