@@ -8,3 +8,19 @@
     border-top: 1px solid white;
     background: #c0c0c0;
 }
+
+.taskbar > .start-menu-button {
+    margin-left: 2px;
+    height: 25px;
+}
+
+.taskbar > .start-menu-button > img {
+    position: relative;
+    top: 1px;
+}
+
+.taskbar > .start-menu-button > b {
+    position: relative;
+    top: -2px;
+    left: 1px
+}
