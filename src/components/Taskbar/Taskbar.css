@@ -58,3 +58,23 @@
 .taskbar > .tray > .icon {
     margin-right: 5px;
 }
+
+/* Start Menu */
+
+.taskbar > .start-menu {
+    position: absolute;
+    bottom: 100%;
+    left: 2px;
+    height: 250px;
+    width: 200px;
+    opacity: 0;
+    pointer-events: none;
+    transition-property: height;
+    transition-duration: 0.1s;
+}
+
+.taskbar > .start-menu.open {
+    opacity: 1;
+    pointer-events: auto;
+    height: 300px;
+}
