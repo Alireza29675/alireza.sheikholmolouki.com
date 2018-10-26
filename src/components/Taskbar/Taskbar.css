@@ -1,5 +1,6 @@
 .taskbar {
     position: fixed;
+    display: flex;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -9,9 +10,12 @@
     background: #c0c0c0;
 }
 
+/* Start Menu Button */
+
 .taskbar > .start-menu-button {
     margin-left: 2px;
     height: 25px;
+    min-width: 57px;
 }
 
 .taskbar > .start-menu-button > img {
@@ -23,4 +27,34 @@
     position: relative;
     top: -2px;
     left: 1px
+}
+
+/* Tasks */
+
+.taskbar > .tasks {
+    flex-grow: 1;
+}
+
+/* Tray */
+
+.taskbar > .tray {
+    height: 25px;
+    margin: 1px;
+    margin-right: 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.taskbar > .tray > time {
+    margin: 0;
+    padding: 0;
+    font-family: "MS Sans Serif", "Segoe UI", sans-serif;
+    font-size: 13px;
+}
+
+.taskbar > .tray > .icon {
+    margin-right: 5px;
 }
