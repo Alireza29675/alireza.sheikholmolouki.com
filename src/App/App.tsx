@@ -1,6 +1,6 @@
 import React, { Component, RefObject, createRef } from 'react';
 import { BackgroundGenerator } from '../backgrounds/BackgroundGenerator'
-import { Grids } from '../backgrounds/Grids'
+import { Ants } from '../backgrounds'
 import './App.css';
 
 interface IProps {
@@ -18,15 +18,21 @@ class App extends Component<IProps, IState> {
 
     constructor (props: IProps) {
         super(props)
-        this.backgroundGenerator = new Grids(this.background)
+        this.backgroundGenerator = new Ants(this.background)
     }
 
     componentDidMount () {
-        if (this.backgroundGenerator) this.backgroundGenerator.mount()
+        if (this.backgroundGenerator) {
+            this.backgroundGenerator.mount()
+            this.backgroundGenerator.play()
+        }
     }
 
     componentWillUnmount () {
-        if (this.backgroundGenerator) this.backgroundGenerator.unmount()
+        if (this.backgroundGenerator) {
+            this.backgroundGenerator.unmount()
+            this.backgroundGenerator.pause()
+        }
     }
 
     render() {

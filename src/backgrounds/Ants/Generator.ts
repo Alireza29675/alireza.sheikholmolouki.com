@@ -1,6 +1,6 @@
-import { BackgroundGenerator } from './BackgroundGenerator'
+import { BackgroundGenerator } from '../BackgroundGenerator'
 
-class EmptyGenerator extends BackgroundGenerator {
+class Generator extends BackgroundGenerator {
 
     protected state = {
         
@@ -13,9 +13,9 @@ class EmptyGenerator extends BackgroundGenerator {
 
     draw () {
         if (!this.state || !this.ctx) return
-
+        
     }
 
 }
 
-export { EmptyGenerator }
+export default Generator

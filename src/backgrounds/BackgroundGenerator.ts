@@ -2,6 +2,11 @@ import { RefObject } from "react";
 
 class BackgroundGenerator {
 
+    public width: number = 0
+    public height: number = 0
+
+    protected isPlaying: boolean = false
+
     protected _canvasRef?: RefObject<HTMLCanvasElement>
     protected ctx: CanvasRenderingContext2D | null = null
 
@@ -12,7 +17,6 @@ class BackgroundGenerator {
     constructor (canvas: RefObject<HTMLCanvasElement>) {
         this._canvasRef = canvas
         window.addEventListener('resize', this.handleResize.bind(this))
-        this.render()
     }
 
     mount () {
@@ -20,18 +24,25 @@ class BackgroundGenerator {
         if (this.canvas) this.ctx = this.canvas.getContext('2d')
     }
 
-    unmount () {
-        
+    unmount () { }
+
+    play () {
+        this.isPlaying = true
+        this.render()
+    }
+
+    pause () {
+        this.isPlaying = false
     }
 
     handleResize () {
         if (!this.canvas) return
-        this.canvas.width = window.innerWidth
-        this.canvas.height = window.innerHeight
+        this.canvas.width = this.width = window.innerWidth
+        this.canvas.height = this.height = window.innerHeight
     }
 
     render () {
-        requestAnimationFrame(() => this.render())
+        if (this.isPlaying) requestAnimationFrame(() => this.render())
         this.clearScreen()
         this.changes()
         this.draw()
@@ -43,13 +54,9 @@ class BackgroundGenerator {
         }
     }
 
-    changes () {
+    changes () { }
 
-    }
-
-    draw () {
-
-    }
+    draw () { }
 
 }
 

@@ -1,6 +1,6 @@
-import { BackgroundGenerator } from './BackgroundGenerator'
+import { BackgroundGenerator } from '../BackgroundGenerator'
 
-class Grids extends BackgroundGenerator {
+class Generator extends BackgroundGenerator {
 
     protected state = {
         
@@ -18,4 +18,4 @@ class Grids extends BackgroundGenerator {
 
 }
 
-export { Grids }
+export default Generator
